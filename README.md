@@ -7,15 +7,20 @@ atmosphere.
 
 ## Install (Not working yet)
 
-For a system install use::
+For a system install use:
+'''
   $ python setup.py install
+'''
 
-For developing in place::
+For developing in place:
+'''
   $ python setup.py develop
+'''
 
 For building in the local directory:
+'''
   $ python setup.py build
-
+'''
 
 
 
