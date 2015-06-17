@@ -6,10 +6,18 @@ useful for remote sensing of clouds (and airborne particles) in the
 atmosphere. 
 
 ## Install (Not working yet)
-For a system install use:
+
+For a system install use::
   $ python setup.py install
-For building in the local directory 
+
+For developing in place::
+  $ python setup.py develop
+
+For building in the local directory:
   $ python setup.py build
+
+
+
 
 ## Requirements
 Python with numpy, scipy, f2py, and some other common packages.  The
@@ -20,6 +28,6 @@ third party packages.
 Fortran source code thanks to Michael Mishchenko: 
 http://www.giss.nasa.gov/staff/mmishchenko/
 
-##Python wrapping thanks to Will Martin:
+Python wrapping thanks to Will Martin:
 https://github.com/wgm2111/wgm-mie-scattering
 
