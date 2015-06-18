@@ -15,83 +15,66 @@ from numpy.distutils.core import Extension
 from os.path import join
 
 
-
 # Global names
-# ------------------
+# ================================================================
+
 NAME = "miescattering"
 VERSION = '0.0.1'
-SOURCE_DIR = 'src'#join(PACKAGE_DIR, 'src')
-TARGET_SO_LIB = ''
-PACKAGES = ['']
-PACKAGE_DIR = {'':'src'}
+DESCRIPTION = (
+    "Lorenz-Mie scattering calculations for airborne particles")
+AUTHOR = "William G.K. Martin"
+AUTHOR_EMAIL = "wgm2111@columbia.edu"
+LICENSE = "GPL2"
 
 
 
-def package_path(fname, package_dir=PACKAGE_DIR):
-    "Join filename with the PACKAGE_DIR"
-    return join(package_dir, fname)
-def source_path(fname, package_dir=PACKAGE_DIR):
-    "Join filename with the PACKAGE_DIR"
-    return join(package_dir, fname)
+# Define the folders to find files in 
+FORTRAN_SOURCE_DIR = 'src'                     # fortran source files 
+PYTHON_SOURCE_DIR = 'mie_scattering'           # python bindings
+TARGET_SO_LIB = join(PYTHON_SOURCE_DIR, 'lib') # .so files
+
+# Define the structure of the compiled package
+PACKAGES = [PYTHON_SOURCE_DIR, 
+            PYTHON_SOURCE_DIR+'.lib']
+PACKAGE_DIR = None
 
 
-# Packages
+# Begin the f2py stuf for building the package
+# ================================================================
 
-# PACKAGES = setuptools.find_packages()#['src']
-
-# Files
-ext_modules = [Extension(TARGET_SO_LIB+'.'+'wig', 
-                         sources = [join(SOURCE_DIR, 'wig.f95'), 
-                                    join(SOURCE_DIR, 'fact.f95')]),
-               Extension(TARGET_SO_LIB+'.'+'fact', 
-                         sources = [join(SOURCE_DIR, 'fact.f95')]),
-               Extension(TARGET_SO_LIB+'.'+'lacis', 
-                         sources = [join(SOURCE_DIR, 'lacis.f')]), 
-               Extension(TARGET_SO_LIB+'.'+'matr', 
-                         sources = [join(SOURCE_DIR, 'matr_.f')]), 
-               Extension(TARGET_SO_LIB+'.'+'spher', 
-                         sources = [join(SOURCE_DIR, 'spher_.f')])]
-
-
-
-# Define the configuration function 
-def configuration(parent_package="", top_path=None):
-    from numpy.distutils.misc_util import Configuration
-    config = Configuration(NAME, parent_package, top_path)
-    config.make_config_py()
-    return config
-
-
-# MIE_SOURCE_FILES = ['spher_.f', 'matr_.f']
-# LACIS_SOURCE_FILES = [wig.f95]
-
-
-# # Extension to call 
-# ext_spher = Extension(
-#     name = 'spher',
-#     sources = [os.path.join(SOURCE_DIR, fname) 
-#                for fname in MIE_SOURCE_FILES])
+# Define the fortran extensions to make
+ext_modules = [
+    Extension(TARGET_SO_LIB+'.'+'wig', 
+              sources = [join(FORTRAN_SOURCE_DIR, 'wig.f95'), 
+                         join(FORTRAN_SOURCE_DIR, 'fact.f95')]),
+    Extension(TARGET_SO_LIB+'.'+'fact', 
+              sources = [join(FORTRAN_SOURCE_DIR, 'fact.f95')]),
+    Extension(TARGET_SO_LIB+'.'+'lacis', 
+              sources = [join(FORTRAN_SOURCE_DIR, 'lacis.f')]), 
+    Extension(TARGET_SO_LIB+'.'+'matr', 
+              sources = [join(FORTRAN_SOURCE_DIR, 'matr_.f')]), 
+    Extension(TARGET_SO_LIB+'.'+'spher', 
+              sources = [join(FORTRAN_SOURCE_DIR, 'spher_.f')])]
 
 
 
 
-
+# Run setup when called as a program
+# --
 if __name__ == "__main__":
     
     # import setup
     from numpy.distutils.core import setup
-    
 
-    # ------------------------------------------------------------------------------
+    # Call to setup the package
     setup(name = NAME,
           version = VERSION,
-          description = "Single scattering computations of airborne particles.",
-          author = "William GK Martin",
-          author_email = "willful_liam@gmail.com",
+          description = DESCRIPTION,
+          author = AUTHOR,
+          author_email = AUTHOR_EMAIL,
           packages=PACKAGES, 
           package_dir=PACKAGE_DIR,
-          configurateion=configuration(),
-          license = 'GPL2', 
+          license = LICENSE, 
           ext_modules=ext_modules)
 
 

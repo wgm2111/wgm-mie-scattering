@@ -7,39 +7,18 @@
 # ================================================================================
 
 """
+Module to interface with .so files compiled from Michael Mishenko's mie codes
+(modified for compatability with f2py).
 
-This file is used to interface with a modified version of Michael Mishchenko's 
-MIE scattering code.  A copy of the original code is available on Michael's web 
-page, ad in the file spher.f 
+The interface helps by limiting the number of input arguments needed.  Also the
+output of routines are SingleScatteringArray's which have nice features for 
+evaluating scattering properties at angles.  
 
-This module imports from spher.so, which is a compiled python module made from 
-spher_.f (an edited version of Michael's code).
+Addition and scalar multiplication work as expected for a SingleScatteringArray. 
+The SingleScatteringArray object subclasses numpy.ndarray.  
 
-** ToDo **
-    Reuse repeated computations of "mono" when advantageous.  
-
-
-
-
-# AA=0.6D0
-# BB=0.2 D0
-# AA1=0.17D0
-# AA2=3.44D0
-# BB1=DLOG(1.96D0)*DLOG(1.96D0)
-# BB2=DLOG(2.37D0)*DLOG(2.37D0)
-# GAM=1D0                                                               
-# LAM=0.63D0                                            
-# MRR=1.53 D0                                               
-# MRI=0.008 D0                                            
-# NDISTR=3
-# NK=100
-# N=100
-# NP=4
-# R1=0 D0
-# R2=35D0       
-# DDELT=1D-7
-
-
+# Default kwds
+{default_kwds}
   
 """
 
@@ -54,13 +33,11 @@ from scipy import sparse
 import scipy.linalg as la
 
 # my imports 
-import spher
-from single_scattering.core import ss_array, SingleScatteringArray
+from lib import spher
+from single_scattering_array import ss_array, SingleScatteringArray
 
 # Global variables
 # ==============================================================================
-
-
 
 # maximum number of GSF coefficients (set in spher_.f)
 GSFMAX = SingleScatteringArray.GSFMAX                 
@@ -77,6 +54,9 @@ default_kwds = dict(
     mrr = 1.53,
     mri = .008,
     ndistr = 3, nk = 10, n = 2000, np = 4, r1 = 0.0, r2 = 35.0, ddelt=1e-10)
+
+# Update documentation to include defaule kwds
+__doc__ = __doc__.format(default_kwds=repr(default_kwds))
 
 
 def _add_default_kwds_doc(fun):
@@ -184,39 +164,19 @@ def mono_dense_array(lam, mrr, mri, r_array, lmax, **kwds):
     Calculate the scattering gsf coeficients for mono-disperse spheres
     or radius r.
     """
+    # Argument checking
     assert r_array.ndim == 1
+
+    # Build the output array
     out_shape = (6, lmax, r_array.size)
     out = sp.zeros(out_shape)
-
-    
-    # call to define blocks in parallel
-    # if False:                    # parallel
-
-    #     # define a function to pass to parmap
-    #     def f(r):
-    #         # initialize output
-    #         out = sp.zeros(out_shape[:-1])
-    #         # call mono and 
-    #         _out = mono_dense(lam, mrr, mri, r,**kwds)
-    #         _lmax = _out.shape[1]
-    #         l = min(_lmax, lmax)
-    #         out[:,:l] = _out[:,:l]
-    #         return out
-    #     # call parmap
-    #     out_list = parmap(f, list(r_array))
-    #     # store in NOT parallel
-    #     for i, _out in enumerate(out_list):
-    #         out[:,:,i] = _out[:,:]
-    # else:
-    
     for i, r in enumerate(r_array):
         _out = mono(lam, mrr, mri, r, lmax=lmax, **kwds)
         _lmax = _out.shape[1]
         l = min(_lmax, lmax)
         out[:,:l,i] = _out[:,:l]
 
-    # md_array = sp.array([mono(lam, mrr, mri, r, lmax=lmax, **kwds)
-    #                      for r in r_array]).transpose([1,2,0])
+    # Output the array as a single scattering array
     return SingleScatteringArray(out)
 
 def mono(lam, mrr, mri, r, lmax=None, **kwds):

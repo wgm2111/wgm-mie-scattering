@@ -44,7 +44,9 @@ import scipy as sp
 import scipy.linalg as la
 
 # my imports 
-from special import gensph, atensor
+from special import gensph, atensor 
+
+
 
 
 # Class definition
@@ -157,8 +159,6 @@ class SingleScatteringArray(sp.ndarray):
         out[5,0] = 0.0
         return out
 
-
-
     def sca(self):
         """
         Return the scattering crossection of particle population. 
@@ -235,11 +235,23 @@ class SingleScatteringArray(sp.ndarray):
         * in *
           theta - angles to sample scattering matrix elements  [radians]
         """
-        
-        # this is a big temporary array 
-        big = self.atensor(theta) * self
-        return big.sum(3).sum(2)
+
+        # OLD WAYS to compute this
+        # 
+        # # this is a big temporary array 
+        # big = self.atensor(theta) * self
+        # return big.sum(3).sum(2)
         # return sp.einsum("ijkl...,kl...->ij...", self.atensor(theta), self)
+        # 
+        # These were raising SEG FAULTS!!! WHY???
+        # 
+        
+        # Scattering matrix 
+        aten = self.atensor(theta)
+        P = sp.tensordot(aten, self, axes=[(-2, -1), (0, 1)])
+        return P
+
+
 
     def scattering_tensor(self, theta):
         " Old name for routine.  Use the more clear name 'angle_eval'. "

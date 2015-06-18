@@ -1,4 +1,5 @@
 
+
 # 
 # author: William G.K. Martin 
 # email: willful_liam@gmail.com 
@@ -40,22 +41,27 @@ https://github.com/wgm2111/wgm-mie-scattering
 
 """
 
-
-import size_average
-
 # Routines from Michael's Fortran code
-import spher_interface
-from spher_interface import mono, lognorm # mono and lognormal averages
-import spher_interface_test               # some test routines
-
-# Averaging routines in Python
-import size_average
-
-# Extra functions
-import z_scale_mie
+from spher_interface import lognorm
 
 
 
 
 # from size_average import mieave
 # from spher_interface import lognorm, mono
+
+
+
+# import special, wig
+
+# from single_scattering_array import (
+#     SingleScatteringArray, ss_array)
+
+# from size_parameter import (
+#     ModeBasis, GammaAerosol, LognormAerosol, MultiLognormAerosol)
+
+# from size_parameter_log import (
+#     LogModeBasis, LogModeVec)
+
+# from refractive_index import mr_water, mi_water		
+# from refractive_index_daimon import mr_water_daimon_21p5
