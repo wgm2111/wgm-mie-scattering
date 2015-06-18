@@ -44,6 +44,7 @@ https://github.com/wgm2111/wgm-mie-scattering
 # Routines from Michael's Fortran code
 from spher_interface import lognorm
 
+import size_distribution 
 
 
 

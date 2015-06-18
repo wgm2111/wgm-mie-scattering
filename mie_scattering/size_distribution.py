@@ -7,12 +7,15 @@
 # ===============================================================================
 
 """
-Class for handling the size parameter pdf poly-disperse aerosols.  
+Module for constructing particle size distributions (actually probability
+density functions of radius).  Support for lognormal and gama distributions 
+is provided, and there is also support for piecewise smooth polynomials 
+known as b-splines.  
 
-Two interfaces are available:
-(1) ModeBasis ModeVec objects for b-spline pdf 
-(2) LognormAerosol and GammaAerosol for analytic PDF's
-  
+Each distribution can be constructed with its particular class definition: 
+(1) ModeBasis - for bsplines
+(2) LognormAerosol - for lognomal size distribution 
+(3) Gamma Aerosol - for a gamma size distribution 
 
 For (1) : 
 
@@ -26,7 +29,7 @@ For (1) :
     mv = mb(*args)                 
 
 
-For (2) : 
+For (2  or 3) : 
 
     LognormAerosol and GammaAerosol subclass rv_continuous object in the 
     scipy.stats.distributions module.
@@ -37,6 +40,10 @@ For (2) :
     # Construct GammaAerosol 
     ga = GammaAerosol(reff, veff, rmin=None, rmax=None)
 
+
+* Notes *
+For lognormal and gamma distributions rmin and rmax are optional, and they 
+help routines that average mie scattering properties.  
 
 """
 
@@ -59,6 +66,7 @@ from numpy import ndarray, unique
 import numpy.testing as ntest
 
 from scipy.stats.distributions import gamma_gen, lognorm_gen, rv_continuous 
+
 
 # my imports 
 
@@ -725,12 +733,12 @@ if __name__=="__main__":
 
     # plot the log mode basis 
     for mv in mb:
-        y = sp.linspace(mv.rmin*(1+.5e-2), 
+        r = sp.linspace(mv.rmin*(1+.5e-2), 
                         mv.rmax*(1-.5e-2))
-        r = y
-        subs[0].plot(y, mv(y)) 
+        y = log(r)
+        subs[0].plot(y, mv(r)) 
         subs[1].plot(r, mv.vdf(r))
-        subs[2].semilogy(r, mv.ndf(r))
+        subs[2].plot(r, mv.ndf(r))#semilogy(r, mv.ndf(r))
     subs[0].set_title('LogModeBasis volume density')
     subs[0].set_ylabel('vdf')
     subs[0].set_xlabel('y = log(r)')

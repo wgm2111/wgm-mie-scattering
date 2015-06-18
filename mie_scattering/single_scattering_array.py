@@ -405,8 +405,9 @@ def ss_array(ext, gsf):
 
 # script
 if __name__=="__main__":
-    pass
-    # import doctest
-    # doctest.testmod()
+
+    # With doctests
+    import doctest
+    doctest.testmod()
             
     # sanity testg 
