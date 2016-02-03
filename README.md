@@ -33,9 +33,9 @@ $ ipython notebook
 ```
 
 
-## You can also install to import `mie_scattering` from any directory. 
+## Install to import from any directory 
 
-For a system install use:
+For a system wide install use:
 ```
   $ python setup.py install
 ```
