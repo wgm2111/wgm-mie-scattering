@@ -1,16 +1,14 @@
 
 # Summary of wgm-mie-scattering
-This Python package is meant to be a simple utility for computing
-the scattering properties of airborne spherical particles.  This is
-useful for remote sensing of clouds (and airborne particles) in the 
-atmosphere.
-
-This code wraps mie scattering codes written by Michael Mishchenko,
-and provides documented routines for gamma, and lognormal size averages. 
-Also, argument checking is provided.
+This Python package is allows you to compute the scattering properties
+of airborne spherical particles.  This is useful for remote sensing of
+clouds (and aerosols) in the atmosphere.  Mie calculations are in FORTRAN
+codes written by Michael Mishchenko.  This package allows you to run
+Michael's calculations from Python.  I have also provided some documentation
+and argument checking for these routines.
 
 The output is given as an array of generalized spherical function
-coeficients (scaled by the extinction).  This array has a method
+coefficients (scaled by the extinction), but the output arrays have a method
 called `angle_eval` which returns the scattering matrix at specified
 angles. 
 
