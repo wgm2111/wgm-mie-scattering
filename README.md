@@ -5,6 +5,26 @@ the scattering properties of airborne spherical particles.  This is
 useful for remote sensing of clouds (and airborne particles) in the 
 atmosphere. 
 
+## Quick try out
+
+(optional) Install the "Anaconda python distribution" by continuum analytics.
+
+Check out this repository:
+```
+$ git clone https://github.com/wgm2111/wgm-mie-scattering
+```
+
+Change to the repository directory and build FORTRAN source code
+```
+$ python setup.py distribute
+```
+
+Run the example ipython notebook
+```
+$ ipython notebook 
+```
+
+
 ## Install (Not working yet)
 
 For a system install use:
