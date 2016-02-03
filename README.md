@@ -3,7 +3,17 @@
 This Python package is meant to be a simple utility for computing
 the scattering properties of airborne spherical particles.  This is
 useful for remote sensing of clouds (and airborne particles) in the 
-atmosphere. 
+atmosphere.
+
+This code wraps mie scattering codes written by Michael Mishchenko,
+and provides documented routines for gamma, and lognormal size averages. 
+Also, argument checking is provided.
+
+The output is given as an array of generalized spherical function
+coeficients (scaled by the extinction).  This array has a method
+called `angle_eval` which returns the scattering matrix at specified
+angles. 
+
 
 ## Quick try out
 
@@ -25,23 +35,12 @@ $ ipython notebook
 ```
 
 
-## Install (Not working yet)
+## You can also install to import `mie_scattering` from any directory. 
 
 For a system install use:
 ```
   $ python setup.py install
 ```
-
-For developing in place:
-```
-  $ python setup.py develop
-```
-
-For building in the local directory:
-```
-  $ python setup.py build
-```
-
 
 
 ## Requirements
