@@ -48,6 +48,23 @@ wigfact = wig.fact
 # function and class definitions 
 # =============================================================================
 
+def wignerd_normalized(x, m, n, lmax):
+    """
+    Normalized wigner d functions. 
+
+    x on -1 to 1
+    m, n, lmax integers
+
+    out ~ (x.size, lmax)
+
+    """
+    wdcos = wig.wignerd_cos(x, m, n, lmax).squeeze()
+    coef = sp.sqrt(2 / (2 * sp.arange(lmax) + 1.0))
+
+    return wdcos / coef[None, :]
+
+    
+
 def gensph(x, m, n, lmax):
     """
     call the fortran wigner d routine 
@@ -116,6 +133,7 @@ def wignerd(theta, m, n, lmax):
     # coef = sp.sqrt(sp.arange(d.shape[-1]) + 1.0/2.0)
     # return d*coef
     return d
+
 
 def gensph_python(x, m, n, lmax):
     """ 
